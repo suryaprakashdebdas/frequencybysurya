@@ -1,0 +1,106 @@
+
+<html>
+  <head>
+    <title>Frequency Generator</title>
+    <script>
+    function saveEmail() {
+        var email = document.getElementById("email").value;
+        localStorage.setItem("email", email);
+        location.reload();
+    }
+    </script>
+  </head>
+  <body>
+    <h1>Frequency Generator</h1>
+    <p>Welcome! Please enter your email address:</p>
+    <label for="email">Email:</label>
+    <input type="text" id="email">
+    <button onclick="saveEmail()">Save Email</button>
+    <br>
+    <script>
+      var email = localStorage.getItem("email");
+      if(!email){
+        document.getElementById("email_form").style.display = "block";
+      }else{
+        document.getElementById("content").style.display = "block";
+      }
+    </script>
+    <div id="email_form" style="display:none">
+      <p>Welcome! Please enter your email address:</p>
+      <label for="email">Email:</label>
+      <input type="text" id="email">
+      <button onclick="saveEmail()">Save Email</button>
+    </div>
+    <div id="content" style="display:none">
+      
+   
+
+  
+
+
+<html>
+
+  <head>
+    <title>Frequency Generator by surya.*NOTE*-(this website is just made in 2hr so the quality may be different in desktop and  mobile phones) </title>
+    <script>
+      var frequency = 30000; // starting frequency
+      var audioContext;
+      var oscillator;
+      
+      function increaseFrequency() {
+        frequency += 1000;
+        document.getElementById("frequency").innerHTML = frequency + " Hz";
+        oscillator.frequency.value = frequency;
+      }
+
+      function decreaseFrequency() {
+        frequency -= 1000;
+        document.getElementById("frequency").innerHTML = frequency + " Hz";
+        oscillator.frequency.value = frequency;
+      }
+
+      function putValue() {
+        var input = document.getElementById("putValue").value;
+        if(!isNaN(input)){
+          frequency = input;
+          document.getElementById("frequency").innerHTML = frequency + " Hz";
+          oscillator.frequency.value = frequency;
+        }else{
+          alert("Invalid Input!")
+        }
+      }
+      
+      function startSound() {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        oscillator = audioContext.createOscillator();
+        oscillator.frequency.value = frequency;
+        oscillator.connect(audioContext.destination);
+        oscillator.start();
+      }
+      
+      function stopSound() {
+        oscillator.stop();
+        oscillator.disconnect();
+        audioContext.close();
+      }
+    </script>
+  </head>
+  <body>
+    <h1>Frequency Generator made by surya.
+*NOTE*-(this website is just made in 2hr so the quality may be different in desktop and  mobile)
+                                    thank you</h1>
+    <p>Current frequency: <span id="frequency">30000 Hz</span></p>
+    <button onclick="increaseFrequency()">Increase Frequency</button>
+    <button onclick="decreaseFrequency()">Decrease Frequency</button>
+    <br>
+    <label for="putValue">Put Value:</label>
+    <input type="text" id="putValue">
+    <button onclick="putValue()">Put Value</button>
+    <br>
+    <button onclick="startSound()">Start Sound</button>
+    <button onclick="stopSound()">Stop Sound</button>
+  </body>
+</html>
+  </div>
+  </body>
+</html>
