@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+
+<html>
+
+  <head>
+
+    <title>Shooting Game</title>
+
+    <style>
+
+      canvas {
+
+        border: 1px solid black;
+
+      }
+
+    </style>
+
+  </head>
+
+  <body>
+
+    <canvas id="canvas" width="800" height="600"></canvas>
+
+    <script>
+
+      // get the canvas and set up the context
+
+      var canvas = document.getElementById('canvas');
+
+      var ctx = canvas.getContext('2d');
+
+      // set up the player and bullet variables
+
+      var player = {x: 400, y: 550, width: 50, height: 50, speed: 5};
+
+      var bullet = {x: 0, y: 0, width: 10, height: 30, speed: 10, active: false};
+
+      // set up the enemy array
+
+      var enemies = [];
+
+      // set up the score variable
+
+      var score = 0;
+
+      // set up the game loop
+
+      setInterval(gameLoop, 20);
+
+      function gameLoop() {
+
+        // clear the canvas
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // draw the player
+
+        ctx.fillStyle = 'blue';
+
+        ctx.fillRect(player.x, player.y, player.width, player.height);
+
+        // move the bullet
+
+        if (bullet.active) {
+
+          bullet.y -= bullet.speed;
+
+          if (bullet.y < 0) {
+
+            bullet.active = false;
+
+          }
+
+        }
+
+        // draw the bullet
+
+        if (bullet.active) {
+
+          ctx.fillStyle = 'red';
+
+          ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
+
+        }
+
+        // draw the enemies
+
+        ctx.fillStyle = 'green';
+
+        for (var i = 0; i < enemies.length; i++) {
+
+          ctx.fillRect(enemies[i].x, enemies[i].y, enemies[i].width, enemies[i].height);
+
+          enemies[i].y += enemies[i].speed;
+
+          // check for collisions between the enemies and the player
+
+          if (collision(player, enemies[i])) {
+
+            gameOver();
+
+          }
+
+          // check for collisions between the enemies and the bullet
+
+          if (collision(bullet, enemies[i])) {
+
+            enemies.splice(i, 1);
+
+            bullet.active = false;
+
+            score += 10;
+
+          }
+
+        }
+
+        // draw the score
+
+        ctx.fillStyle = 'black';
+
+        ctx.font = '24px Arial';
+
+        ctx.fillText('Score: ' + score, 10, 30);
+
+      }
+
+      function collision(a, b) {
+
+        if (a.x < b.x + b.width &&
+
+            a.x + a.width > b.x &&
+
+            a.y < b.y + b.height &&
+
+            a.y + a.height > b.y) {
+
+          return true;
+
+        }
+
+        return false;
+
+      }
+
+      function gameOver() {
+
+        alert('Game Over');
+
+        score = 0;
+
+        player.x = 400;
+
+        player.y = 550;
+
+        enemies = [];
+
+      }
+
+      // set up the keyboard controls
+
+      document.addEventListener('keydown', function(event) {
+
+        if (event.keyCode == 37) { // left arrow
+
+          player.x -= player.speed;
+
+        } else if (event.keyCode == 39) { // right arrow
+
+          player.x += player.speed;
+
+        } else if (event.keyCode == 32) { // space bar
+
+          if (!bullet.active) {
+
+            bullet.active = true;
+
+            bullet.x = player.x + player.width / 2 - bullet.width / 2;
+
+            bullet.y = player.y - bullet.height;
+
